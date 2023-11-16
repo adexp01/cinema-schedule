@@ -10,6 +10,7 @@ export async function POST (req: NextRequest, res: NextResponse) {
   })
 
   try {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-expect-error
     const chatCompletion: IOpenAiResponse = await openai.chat.completions.create({
       messages: [{

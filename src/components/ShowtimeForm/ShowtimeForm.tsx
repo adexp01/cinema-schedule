@@ -56,7 +56,7 @@ const ShowtimeForm: React.FC<IProps> = ({ movieList, setMovieList }) => {
           <div className={style.showtimeAddFormEl}>
             <span>Фільм</span>
             <select className={style.movieSelect} name="movieSelect" onChange={(e) => { setMovieIndex(+e.target.value) }}>
-              {movieList.map((movie, index) => <option value={index}>{movie.name}</option>)}
+              {movieList.map((movie, index) => <option key={index} value={index}>{movie.name}</option>)}
             </select>
             <span>потрібно показати</span>
             <input

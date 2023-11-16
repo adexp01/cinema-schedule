@@ -52,10 +52,6 @@ const Movies: React.FC<IProps> = ({ movieList, setMovieList }) => {
     setMovieList((prev) => prev.filter((movie, i) => i !== index))
   }
 
-  const handleAddMovieShowtime = (index: number) => {
-    setMovieList((prev) => prev.filter((movie, i) => i !== index))
-  }
-
   return (
     <div className={style.container}>
       <Title>2. Добавте фільми які потрібно вписати в розклад.</Title>

@@ -1,8 +1,8 @@
-import React from "react";
+import React from 'react'
 
-export interface IInputProps<T>{
-    isInText: boolean
-    required:boolean
-    value:T
-    setValue: React.Dispatch<React.SetStateAction<T>>
+export interface IInputProps<T> {
+  isInText: boolean
+  required: boolean
+  value: T
+  setValue: React.Dispatch<React.SetStateAction<T>>
 }
