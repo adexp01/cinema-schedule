@@ -1,0 +1,14 @@
+@import "../../styles/vars";
+
+.header{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: $darkDracula;
+  width: 100%;
+}
+
+.headerLogo{
+  color: $gold;
+  border-bottom: 1px solid $gold;
+}

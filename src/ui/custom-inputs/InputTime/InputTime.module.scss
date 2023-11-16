@@ -1,0 +1,16 @@
+@import "../../../styles/vars";
+
+.input{
+  border:none;
+  background: none;
+  color: $gold;
+  outline: none;
+  border-bottom: 1px solid $gold;
+  text-align: center;
+  font-size: 14px;
+  min-width: 80px;
+  &[type="time"]::-webkit-calendar-picker-indicator{
+    filter: invert(50%) sepia(50%) saturate(2207%) hue-rotate(10deg) brightness(100%) contrast(100%);
+  }
+
+}

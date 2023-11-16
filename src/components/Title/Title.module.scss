@@ -1,0 +1,12 @@
+@import "../../styles/vars";
+
+.container{
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.title{
+  width: 700px;
+  color: $white;
+}

@@ -1,0 +1,99 @@
+@import "../../styles/vars";
+
+.container{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  flex-direction: column;
+}
+
+.showtimeListEl{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.showtimeAddForm{
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+  gap: 15px;
+  color: $gold;
+  font-size: 14px;
+
+  input{
+    border:none;
+    background: none;
+    color: $gold;
+    outline: none;
+    border-bottom: 1px solid $gold;
+    width: 30px;
+    text-align: center;
+    &[type="time"]{
+      min-width: 100px;
+    }
+    &[type="time"]::-webkit-calendar-picker-indicator{
+      filter: invert(50%) sepia(50%) saturate(2207%) hue-rotate(10deg) brightness(100%) contrast(100%);
+    }
+  }
+}
+
+.showtimeAddFormEl{
+  display: flex;
+  width: 650px;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 20px;
+  font-size: 18px;
+}
+
+.movieSelect{
+  -webkit-appearance: button;
+  -webkit-border-radius: 2px;
+  -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  -webkit-padding-end: 20px;
+  -webkit-padding-start: 2px;
+  -webkit-user-select: none;
+  text-align: center;
+  color: $gold;
+  min-width: 240px;
+  padding: 5px;
+  border: 2px solid $gold;
+  background: none;
+  outline: none;
+  box-shadow: none;
+}
+
+
+.showtimeAdd, .movieRemove{
+  cursor: pointer;
+  color: $gold;
+  opacity: .5;
+  transition:all .3s linear;
+  background: none;
+  border:none;
+
+  &:hover{
+    opacity: 1;
+  }
+}
+
+.showtimeList{
+  display: flex;
+  justify-content: left;
+  flex-direction: column;
+  width: 600px;
+  gap: 20px;
+  border: 2px solid $gold;
+  border-radius: 10px;
+  padding: 20px;
+  box-sizing: border-box;
+  list-style-type: none;
+
+  li{
+    color: $white;
+  }
+}

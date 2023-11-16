@@ -1,0 +1,30 @@
+@import "../../../styles/vars";
+
+.input{
+  outline: none;
+    -moz-appearance: textfield;
+    background: none;
+    border: none;
+    width: 30px;
+    &::-webkit-outer-spin-button,
+    &::-webkit-inner-spin-button{
+      -webkit-appearance: none;
+      margin: 0;
+    }
+}
+
+.inText{
+  color: $gold;
+  border-bottom: 1px solid $gold;
+  text-align: center;
+  width: 25px;
+}
+
+.default{
+  border: 2px solid $gold;
+  background: $darkDracula;
+  padding: 10px;
+  border-radius: 5px;
+  color: $gold;
+  outline: none;
+}

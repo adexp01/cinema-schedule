@@ -1,0 +1,110 @@
+@import "../../styles/vars";
+
+.form{
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 20px;
+  max-width: 600px;
+  width: 100%;
+  color: $gold
+}
+
+.container{
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 10px;
+  //width: 48%;
+}
+
+.formInput{
+  display: flex;
+  align-items: center;
+  width: 100%;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap;
+
+  input{
+    border: 2px solid $gold;
+    background: $darkDracula;
+    padding: 10px;
+    border-radius: 5px;
+    color: $gold;
+    outline: none;
+
+    &[type="number"]{
+      appearance: textfield;
+      -moz-appearance: textfield;
+      -webkit-appearance: textfield;
+      margin: 0;
+      width: 40px;
+    }
+  }
+}
+
+.formElement{
+  display: flex;
+  flex-direction: column;
+}
+
+.movieList{
+  display: flex;
+  justify-content: left;
+  flex-direction: column;
+  width: 600px;
+  gap: 20px;
+  border: 2px solid $gold;
+  border-radius: 10px;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.movieItem{
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.movieItemContent{
+  display: flex;
+}
+
+
+
+.movieItemContainer{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: $white;
+  gap: 10px;
+  width: 100%;
+
+}
+
+
+
+
+.button{
+  border: 2px solid $gold;
+  color: $background;
+  font-weight: 500;
+  border-radius: 5px;
+  background: $gold;
+  transition: all .3s linear;
+  padding: 2px 5px;
+  cursor: pointer;
+
+  &:hover{
+    color: $gold;
+    background: $background;
+  }
+
+  &:active{
+    transition: all .1s ease-in;
+    background: $gold;
+  }
+}
