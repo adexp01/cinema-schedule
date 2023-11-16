@@ -1,0 +1,17 @@
+@import "../../styles/vars";
+
+.form{
+  display: flex;
+  width: fit-content;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.formEl{
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 10px;
+  color: $gold;
+}
