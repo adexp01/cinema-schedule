@@ -3,7 +3,6 @@ import React, { useEffect, useState } from 'react'
 
 import { CinemaForm, Halls, Movies, ShowtimeForm } from '@/components'
 import { ICinemaInfo, IMovie } from '@/types/interfaces/movie.interface'
-import { IOpenAiResponse } from '@/types/interfaces/openai.interface'
 import { messageGenerator } from '@/utils/message-generator.util'
 
 import style from './GenerateForm.module.scss'
@@ -17,10 +16,9 @@ const GenerateForm: React.FC = () => {
     cinemaOpenTime: '',
     employeeCount: 0
   })
-  const [openAiResp, setOpenAiResp] = useState<IOpenAiResponse>()
+  const [openAiResp, setOpenAiResp] = useState<any>()
 
-  const [isReadyToSend, setIsReadyToSend] = useState<boolean>(false)
-  useEffect(() => {
+  const func = async () => {
     if (!isReadyToSend) return
 
     let status: boolean = true
@@ -36,16 +34,33 @@ const GenerateForm: React.FC = () => {
     }
 
     if (status) {
-      void axios.post('/api/gpt-chat', {
+      const { data } = await axios.post('/api/gpt-chat', {
         message: messageGenerator(
           hallList,
           movieList,
           [...movieList.map(movie => movie.showTimes).flat()],
           cinemaInfo
         )
-      }).then(res => { setOpenAiResp(res.data) })
+      }, { timeout: 60 * 1000 })
+
+      console.log(data.choices[0].message.content)
+      setOpenAiResp(data.choices[0].message.content)
+      // const socket = await data
+      //
+      // console.log(socket)
+      //
+      // console.log(await data)
+      //
+      // for await (const chunk of data) {
+      //   console.log(chunk)
+      // }
     }
     setIsReadyToSend(false)
+  }
+
+  const [isReadyToSend, setIsReadyToSend] = useState<boolean>(false)
+  useEffect(() => {
+    void func().then()
   }, [isReadyToSend])
 
   return (
@@ -54,7 +69,7 @@ const GenerateForm: React.FC = () => {
       <Movies movieList={movieList} setMovieList={setMovieList}/>
       <ShowtimeForm movieList={movieList} setMovieList={setMovieList}/>
       <CinemaForm setCinemaInfo={setCinemaInfo} setStatus={setIsReadyToSend}/>
-      {openAiResp && <p className={style.resp}>{openAiResp.message.choices[0].message.content}</p>}
+      {openAiResp && <p className={style.resp}>{openAiResp}</p>}
 
       {/* <GoldButton>Згенерувати розклад</GoldButton> */}
     </div>

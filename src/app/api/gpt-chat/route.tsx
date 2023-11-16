@@ -1,10 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server'
 import OpenAI from 'openai'
 
-import { IOpenAiError, IOpenAiResponse } from '@/types/interfaces/openai.interface'
+import { IOpenAiError } from '@/types/interfaces/openai.interface'
+
+export const runtime = 'edge'
 
 export async function POST (req: NextRequest, res: NextResponse) {
-  const { message } = await req.json()
+  // const { message } = await req.json()
   const openai: OpenAI = new OpenAI({
     apiKey: process.env.NEXT_PUBLIC_GPT_API_KEY
   })
@@ -15,12 +17,12 @@ export async function POST (req: NextRequest, res: NextResponse) {
     const chatCompletion: IOpenAiResponse = await openai.chat.completions.create({
       messages: [{
         role: 'user',
-        content: message
+        content: '2+2'
       }],
       model: 'gpt-4'
     })
 
-    return NextResponse.json({ message: chatCompletion }, { status: 200 })
+    return NextResponse.json(chatCompletion, { status: 200 })
   } catch (e: IOpenAiError | unknown) {
     if (typeof e === 'object' && e !== null && 'status' in e) {
       const error = e as IOpenAiError
