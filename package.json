@@ -9,15 +9,23 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@types/react-dnd": "^3.0.2",
+    "ai": "^2.2.23",
     "axios": "^1.6.1",
     "eslint-config-standard-with-typescript": "^39.1.1",
     "eslint-plugin-simple-import-sort": "^10.0.0",
     "eslint-plugin-unused-imports": "^3.0.0",
+    "eventsource-parser": "^1.1.1",
+    "jotai": "^2.5.1",
     "next": "14.0.2",
     "normalize.css": "^8.0.1",
     "openai": "^4.17.5",
+    "openai-edge": "^1.2.2",
     "react": "^18",
+    "react-dnd": "^16.0.1",
+    "react-dnd-html5-backend": "^16.0.1",
     "react-dom": "^18",
+    "stream": "^0.0.2",
     "uuid": "^9.0.1"
   },
   "devDependencies": {

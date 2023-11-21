@@ -30,6 +30,7 @@ const CinemaForm: React.FC<IProps> = ({ setCinemaInfo, setStatus }) => {
     setCinemaInfo(() => result)
     setStatus(true)
   }
+
   return (
     <form onSubmit={handleFormSubmit} className={style.form}>
       <Title>4. Добавте інформацію про кінотеатр.</Title>

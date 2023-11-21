@@ -71,7 +71,8 @@ const Movies: React.FC<IProps> = ({ movieList, setMovieList }) => {
           <div className={style.formElement}>
             <h3 className={style.formTitle}>Тривалість (хв.):</h3>
             <input
-              type="number"
+              type="text"
+              inputMode="numeric"
               name="duration"
               max={999}
               maxLength={3}

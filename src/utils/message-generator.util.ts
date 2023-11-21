@@ -2,24 +2,68 @@ import { ICinemaInfo, IMovie, IShowtime } from '@/types/interfaces/movie.interfa
 
 const messageHeader: string = 'Create schedule for the cinema in json format without extra explanation, in names do not use space and other characters, only numbers and letters, json should be in the following format:\n' +
   '\n' +
-  'Screen1 Schedule\n' +
-  '    * Movie1:\n' +
-  '    * 09:00 - 10:00\n' +
-  '    * Movie2:\n' +
-  '    * 09:00 - 11:00\n' +
-  'Screen2 Schedule\n' +
-  '    * Movie1:\n' +
-  '    * 09:00 - 10:00\n' +
-  'And continues according to the conditions.\n' +
-  'Below this schedule I need another separate cleaning schedule in the following format:\n' +
-  'Cleaner1 Schedule\n' +
-  '    * Screen1 Cleaning\n' +
-  '    * After Movie1: 10:15 - 10:35\n' +
-  'Cleaner2 Schedule\n' +
-  '    * Screen2 Cleaning\n' +
-  '    * After Movie1: 10:15 - 10:35\n' +
-  'And continues.\n' +
-  '\n'
+  '{\n' +
+  '   "CinemaSchedule":[\n' +
+  '      {\n' +
+  '         "name":"hall1",\n' +
+  '         "movies":[\n' +
+  '            {\n' +
+  '               "name":"movie1",\n' +
+  '               "showtime":"09:00-10:50"\n' +
+  '            },\n' +
+  '            {\n' +
+  '               "name":"movie2",\n' +
+  '               "showtime":"11:11-13:14"\n' +
+  '            }\n' +
+  '         ]\n' +
+  '      },\n' +
+  '      {\n' +
+  '         "name":"hall2",\n' +
+  '         "movies":[\n' +
+  '            {\n' +
+  '               "name":"movie1",\n' +
+  '               "showtime":"09:00-10:50"\n' +
+  '            },\n' +
+  '            {\n' +
+  '               "name":"movie2",\n' +
+  '               "showtime":"11:11-13:14"\n' +
+  '            }\n' +
+  '         ]\n' +
+  '      },\n' +
+  '      {\n' +
+  '         "name":"hall3",\n' +
+  '         "movies":[\n' +
+  '            {\n' +
+  '               "name":"movie1",\n' +
+  '               "showtime":"09:00-10:50"\n' +
+  '            },\n' +
+  '            {\n' +
+  '               "name":"movie2",\n' +
+  '               "showtime":"11:11-13:14"\n' +
+  '            }\n' +
+  '         ]\n' +
+  '      }\n' +
+  '   ]' +
+  '}' +
+  'strictly this JSON architecture and wrap it in curly braces \'{...}\'.'
+  // 'Screen1 Schedule\n' +
+  // '    * Movie1:\n' +
+  // '    * 09:00 - 10:00\n' +
+  // '    * Movie2:\n' +
+  // '    * 09:00 - 11:00\n' +
+  // 'Screen2 Schedule\n' +
+  // '    * Movie1:\n' +
+  // '    * 09:00 - 10:00\n' +
+  // 'And continues according to the conditions.\n' +
+  // 'Below this schedule I need another separate cleaning schedule in the following format:\n' +
+  // 'Cleaner1 Schedule\n' +
+  // '    * Screen1 Cleaning\n' +
+  // '    * After Movie1: 10:15 - 10:35\n' +
+  // 'Cleaner2 Schedule\n' +
+  // '    * Screen2 Cleaning\n' +
+  // '    * After Movie1: 10:15 - 10:35\n' +
+  // 'And continues.\n' +
+  // '\n'
 export const messageGenerator = (hallList: string[], movieList: IMovie[], showtimeList: IShowtime[], cinemaInfo: ICinemaInfo): string => {
   return messageHeader +
     'Strictly use below conditions:\n' +
@@ -29,9 +73,7 @@ export const messageGenerator = (hallList: string[], movieList: IMovie[], showti
     `${movieList.map((el) => `${el.name} duration is ${convertMinutesToHours(el.duration)}`).join(', ')}.\n"` +
     'There is condition of how may times movies should be shown:\n' +
     `${movieList.map((el) => `${el.name} should be shown ${el.showTimes.map((showtime) => `${showtime.count} times from ${showtime.from} till ${showtime.to}`).join(' and ')}`)} \n` +
-    `4.Cleaning takes ${cinemaInfo.cleanTime} minutes, there are two cleaners , with the following names:  Cleaner1, Cleaner2.\n` +
-    '5.One cleaner can clean only one Screen at a time.\n' +
-    `6.Before each movie , we need to show ${cinemaInfo.advertingTime} minutes of advertisement, this should be added to the movie duration.`
+    `6.Before each movie , we need to show ${cinemaInfo.advertingTime} minutes of advertisement, this should be added to the movie duration. And return only json`
 }
 
 function convertMinutesToHours (minutes: number): string {

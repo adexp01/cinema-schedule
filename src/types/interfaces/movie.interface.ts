@@ -20,3 +20,23 @@ export interface ICinemaInfo {
   advertingTime: number
   [key: string]: any
 }
+
+export interface ICinemaSchedule {
+  'CinemaSchedule': IMovieWithHall[]
+  'CleaningSchedule': ICleanerSchedule[]
+}
+
+export interface IMovieWithHall {
+  name: string
+  movies: IMovieSchedule[]
+}
+
+export interface IMovieSchedule {
+  'name': string
+  'showtime': string
+}
+export interface ICleanerSchedule {
+  'employee': string
+  'hallName': string
+  'cleaningTime': string
+}
