@@ -15,15 +15,12 @@ export interface IMovie {
 
 export interface ICinemaInfo {
   cinemaOpenTime: string
-  employeeCount: number
-  cleanTime: number
   advertingTime: number
   [key: string]: any
 }
 
 export interface ICinemaSchedule {
   'CinemaSchedule': IMovieWithHall[]
-  'CleaningSchedule': ICleanerSchedule[]
 }
 
 export interface IMovieWithHall {

@@ -2,22 +2,24 @@ import React, { useState } from 'react'
 import { v4 as uuidv4 } from 'uuid'
 
 import { Title } from '@/components'
+import { useCinemaContext } from '@/hooks'
 import { IMovie, IShowtime } from '@/types/interfaces/movie.interface'
-import { GoldButton, InputTime } from '@/ui'
+import { GoldButton, InputNumber, InputTime } from '@/ui'
 
 import style from './ShowtimeForm.module.scss'
 
-interface IProps {
-  movieList: IMovie[]
-  setMovieList: React.Dispatch<React.SetStateAction<IMovie[]>>
-}
-
-const ShowtimeForm: React.FC<IProps> = ({ movieList, setMovieList }) => {
+const ShowtimeForm: React.FC = () => {
   const [showtimeCount, setShowtimeCount] = useState<number>(0)
   const [showtimeFrom, setShowtimeFrom] = useState<string>('')
   const [showtimeTo, setShowtimeTo] = useState<string>('')
   const [showtimeList, setShowtimeList] = useState<IShowtime[]>([])
   const [movieIndex, setMovieIndex] = useState<number>(0)
+
+  const { movieList, setMovieList } = useCinemaContext()
+
+  const validation = movieList.length > 3
+  const opacity = validation ? 1 : 0.5
+
   const handleShowtimeCreate = (e: React.FormEvent<HTMLFormElement>): void => {
     e.preventDefault()
     if (showtimeCount === 0 || showtimeFrom?.length === 0 || showtimeTo?.length === 0) return
@@ -44,9 +46,9 @@ const ShowtimeForm: React.FC<IProps> = ({ movieList, setMovieList }) => {
   }
 
   return (
-    <div className={style.container}>
+    <div className={style.container} style={{ opacity, transition: '0.3s all linear', filter: `blur(${validation ? 0 : 3}px)` }}>
       <div>
-        <Title>3. Добавте інформацію про фільми.</Title>
+        <Title>4. Добавте інформацію про фільми.</Title>
 
         <form
           id="showtime"
@@ -59,12 +61,13 @@ const ShowtimeForm: React.FC<IProps> = ({ movieList, setMovieList }) => {
               {movieList.map((movie, index) => <option key={index} value={index}>{movie.name}</option>)}
             </select>
             <span>потрібно показати</span>
-            <input
-              type="number"
-              name="count"
+            <InputNumber
               value={showtimeCount}
               required={true}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) => { setShowtimeCount(+e.target.value) }}
+              isInText={true}
+              max={9}
+              maxLength={2}
+              setValue={setShowtimeCount}
             />
             <span>
               {showtimeCount > 1 ? 'рази' : 'раз'}

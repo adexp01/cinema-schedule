@@ -1,42 +1,39 @@
 import React, { useState } from 'react'
 
 import { Title } from '@/components'
+import { useCinemaContext } from '@/hooks'
 import { IMovie } from '@/types/interfaces/movie.interface'
-import { GoldButton } from '@/ui'
+import { GoldButton, InputNumber } from '@/ui'
 
 import style from './Movies.module.scss'
 
-interface IProps {
-  movieList: IMovie[]
-  setMovieList: React.Dispatch<React.SetStateAction<IMovie[]>>
-}
-
-const Movies: React.FC<IProps> = ({ movieList, setMovieList }) => {
+const Movies: React.FC = () => {
   const [movie, setMovie] = useState<IMovie>({
     name: '',
     duration: 0,
     showTimes: []
   })
   const [movieName, setMovieName] = useState<string>('')
-  const [movieDuration, setMovieDuration] = useState<number>(0)
+  const [movieDuration, setMovieDuration] = useState<number>(1)
+
+  const { advertingTime, hallList, movieList, setMovieList } = useCinemaContext()
+
+  const validation = hallList.length > 2
+  const opacity = validation ? 1 : 0.5
 
   const handleUpdateMovieName = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setMovieName(e.target.value)
   }
 
-  const handleUpdateMovieDuration = (e: React.ChangeEvent<HTMLInputElement>): void => {
-    if (e.target.value.length <= 3) {
-      setMovieDuration(+e.target.value)
-    }
-  }
-
   const handleAddMovie = (e: React.FormEvent<HTMLFormElement>): void => {
     e.preventDefault()
+
+    if (movieName.length === 0) return
 
     if (!movieList.some((movie) => movie.name === movieName)) {
       setMovieList((prev) => [
         ...prev,
-        { ...movie, duration: movieDuration, name: movieName }
+        { ...movie, duration: movieDuration + advertingTime, name: movieName }
       ])
 
       setMovie({
@@ -45,6 +42,7 @@ const Movies: React.FC<IProps> = ({ movieList, setMovieList }) => {
         duration: 0,
         showTimes: []
       })
+      setMovieName('')
     }
   }
 
@@ -53,8 +51,8 @@ const Movies: React.FC<IProps> = ({ movieList, setMovieList }) => {
   }
 
   return (
-    <div className={style.container}>
-      <Title>2. Добавте фільми які потрібно вписати в розклад.</Title>
+    <div className={style.container} style={{ opacity, transition: '0.3s all linear', filter: `blur(${validation ? 0 : 3}px)` }}>
+      <Title>3. Добавте фільми які потрібно вписати в розклад.</Title>
       <form className={style.formInput} onSubmit={handleAddMovie}>
         <div className={style.form}>
           <div className={style.formElement}>
@@ -62,35 +60,29 @@ const Movies: React.FC<IProps> = ({ movieList, setMovieList }) => {
             <input
               type="text"
               name="name"
+              required={true}
               autoComplete="off"
               className={style.input}
               value={movieName}
+              disabled={!validation}
               onChange={handleUpdateMovieName}
             />
           </div>
           <div className={style.formElement}>
-            <h3 className={style.formTitle}>Тривалість (хв.):</h3>
-            <input
-              type="text"
-              inputMode="numeric"
-              name="duration"
-              max={999}
-              maxLength={3}
-              className={style.input}
-              value={movieDuration}
-              onChange={handleUpdateMovieDuration}
-            />
+            <h3 className={style.formTitle}>Тривалість:</h3>
+            <div className={style.inputWrapper}>
+              <InputNumber
+                required={true}
+                isInText={false}
+                value={movieDuration}
+                setValue={setMovieDuration}
+              />
+              <span>хв.</span>
+            </div>
           </div>
-
-          <button
-            className={style.button}
-          >
-                       Добавити
-          </button>
+          <button className={style.button} disabled={!validation}>Добавити</button>
         </div>
-
       </form>
-
       {movieList.length > 0 && <ul className={style.movieList}>
         {movieList.map((movie, index) =>
           <li key={`${Math.random() + index}`} className={style.movieItem}>
@@ -98,11 +90,8 @@ const Movies: React.FC<IProps> = ({ movieList, setMovieList }) => {
               <div>
                 <span className={style.movieItemContent}>{++index}. {movie.name} | {movie.duration}хв.</span>
               </div>
-              <GoldButton eventHandler={() => {
-                handleRemoveMovie(--index)
-              }}>Видалити</GoldButton>
+              <GoldButton eventHandler={() => { handleRemoveMovie(--index) }}>Видалити</GoldButton>
             </div>
-
           </li>)}
       </ul>}
     </div>

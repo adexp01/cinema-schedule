@@ -1,9 +1,10 @@
 import fetch from 'node-fetch'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 
 import { CinemaForm, Halls, Movies, ShowtimeForm } from '@/components'
-import { ScheduleTable } from '@/components/ScheduleTable'
-import { ICinemaInfo, ICinemaSchedule, IMovie } from '@/types/interfaces/movie.interface'
+import { useCinemaContext } from '@/hooks'
+// import { ScheduleTable } from '@/components/ScheduleTable'
+import { GoldButton } from '@/ui'
 import { messageGenerator } from '@/utils/message-generator.util'
 
 import style from './GenerateForm.module.scss'
@@ -61,20 +62,22 @@ const dataForTest: string = 'Create schedule for the cinema in json format witho
   '6.Before each movie , we need to show 20 minutes of advertisement, this should be added to the movie duration. And return only json'
 
 const GenerateForm: React.FC = () => {
-  const [hallList, setHallList] = useState<string[]>([])
-  const [movieList, setMovieList] = useState<IMovie[]>([])
-  const [cinemaInfo, setCinemaInfo] = useState<ICinemaInfo>({
-    advertingTime: 0,
-    cleanTime: 0,
-    cinemaOpenTime: '',
-    employeeCount: 0
-  })
-  const [isLoaded, setIsLoaded] = useState<boolean>(true)
-  const [isReadyToSend, setIsReadyToSend] = useState<boolean>(false)
-  const [cinemaSchedule, setCinemaSchedule] = useState<ICinemaSchedule>({
-    CinemaSchedule: [],
-    CleaningSchedule: []
-  })
+  const {
+    hallList,
+    movieList,
+    cinemaInfo,
+    setCinemaInfo,
+    isLoaded,
+    setIsLoaded,
+    isReadyToSend,
+    setIsReadyToSend,
+    setCinemaSchedule,
+    cinemaOpenTime,
+    advertingTime
+  } = useCinemaContext()
+
+  const validation = hallList.length > 2 && movieList.length > 3 && cinemaOpenTime.length > 1 && advertingTime > 1
+
   const func = async () => {
     if (!isReadyToSend) return
 
@@ -104,13 +107,12 @@ const GenerateForm: React.FC = () => {
           })
         })
 
-        let result: string = ''
-
         const data: any = response.body
 
         if (!data) return
 
         const reader = data.getReader()
+        let result: string = ''
 
         while (true) {
           const readerResponse = await reader?.read()
@@ -121,7 +123,6 @@ const GenerateForm: React.FC = () => {
           result += chunkValue
         }
 
-        console.log(result)
         setCinemaSchedule(() => JSON.parse(result))
       }
     } catch (e) {
@@ -136,15 +137,33 @@ const GenerateForm: React.FC = () => {
     void func().then()
   }, [isReadyToSend])
 
+  useEffect(() => {
+    const openTimeValidation = cinemaOpenTime === cinemaInfo.cinemaOpenTime
+    const advertingValidation = advertingTime === cinemaInfo.advertingTime
+
+    if (openTimeValidation && advertingValidation) return
+
+    setCinemaInfo((prev) => {
+      return {
+        cinemaOpenTime: openTimeValidation ? prev.cinemaOpenTime : cinemaOpenTime,
+        advertingTime: advertingValidation ? prev.advertingTime : advertingTime
+      }
+    })
+  }, [advertingTime, cinemaOpenTime])
+
   return (
     <div className={style.form}>
-      <Halls hallList={hallList} setHallList={setHallList}/>
-      <Movies movieList={movieList} setMovieList={setMovieList}/>
-      <ShowtimeForm movieList={movieList} setMovieList={setMovieList}/>
-      <CinemaForm setCinemaInfo={setCinemaInfo} setStatus={setIsReadyToSend}/>
-      {!isLoaded && <div className={style.dotContainer}><div className={style.dotElastic}></div></div>}
-
-      { cinemaSchedule?.CinemaSchedule?.length > 0 && <ScheduleTable cinemaSchedules={cinemaSchedule}/>}
+      <CinemaForm/>
+      <Halls/>
+      <Movies/>
+      <ShowtimeForm/>
+      {!isLoaded &&
+        <div className={style.dotContainer}>
+          <div className={style.dotElastic}></div>
+        </div>
+      }
+      <GoldButton isDisabled={!validation} eventHandler={() => { setIsReadyToSend(true) }}>Згенерувати</GoldButton>
+      {/* { cinemaSchedule?.CinemaSchedule?.length > 0 && <ScheduleTable cinemaSchedules={cinemaSchedule}/>} */}
     </div>
 
   )

@@ -73,7 +73,8 @@ export const messageGenerator = (hallList: string[], movieList: IMovie[], showti
     `${movieList.map((el) => `${el.name} duration is ${convertMinutesToHours(el.duration)}`).join(', ')}.\n"` +
     'There is condition of how may times movies should be shown:\n' +
     `${movieList.map((el) => `${el.name} should be shown ${el.showTimes.map((showtime) => `${showtime.count} times from ${showtime.from} till ${showtime.to}`).join(' and ')}`)} \n` +
-    `6.Before each movie , we need to show ${cinemaInfo.advertingTime} minutes of advertisement, this should be added to the movie duration. And return only json`
+    '4.There should be a maximum of 4 films in one hall.' +
+    '5.Round the movie session time to the nearest multiple of 5, for example, if it\'s \'09:13-11:13\', round it to \'09:15-11:15\'.'
 }
 
 function convertMinutesToHours (minutes: number): string {

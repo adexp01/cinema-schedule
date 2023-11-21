@@ -1,23 +1,28 @@
-import React, { useState } from 'react'
+import React, { FormEvent, useState } from 'react'
 
 import { Title } from '@/components'
+import { useCinemaContext } from '@/hooks'
 import { GoldButton } from '@/ui'
 
 import style from './Halls.module.scss'
 
-interface IProps {
-  hallList: string[]
-  setHallList: React.Dispatch<React.SetStateAction<string[]>>
-}
-
-const Halls: React.FC<IProps> = ({ hallList, setHallList }) => {
+const Halls: React.FC = () => {
   const [hallName, setHallName] = useState<string>('')
+
+  const { cinemaOpenTime, advertingTime, hallList, setHallList } = useCinemaContext()
+
+  const validation = cinemaOpenTime.length > 0 && advertingTime
+  const opacity = validation ? 1 : 0.5
 
   const handleHallNaming = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setHallName(e.target.value)
   }
 
-  const handleAddHall = () => {
+  const handleAddHall = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+
+    if (hallName.length === 0) return
+
     if (!hallList.includes(hallName)) {
       setHallList((prev) => [...prev, hallName])
       setHallName('')
@@ -29,17 +34,17 @@ const Halls: React.FC<IProps> = ({ hallList, setHallList }) => {
   }
 
   return (
-    <div className={style.container}>
-      <Title>1. Добавте інформацію про зали в формі нижче.</Title>
-      <div className={style.form}>
+    <div className={style.container} style={{ opacity, transition: '0.3s all linear', filter: `blur(${validation ? 0 : 3}px)` }}>
+      <Title>2. Добавте інформацію про зали в формі нижче.</Title>
+      <form className={style.form} onSubmit={handleAddHall}>
         <div className={style.formInput}>
           <div className="d">
             <h3 className={style.formTitle}>Введіть назву залу:</h3>
-            <input type="text" className={style.input} value={hallName} onChange={handleHallNaming}/>
+            <input disabled={!validation} required={true} type="text" className={style.input} value={hallName} onChange={handleHallNaming}/>
           </div>
-          <GoldButton eventHandler={handleAddHall}>Добавити</GoldButton>
+          <GoldButton>Добавити</GoldButton>
         </div>
-      </div>
+      </form>
 
       {hallList.length > 0 && <ul className={style.hallList}>
         {hallList.map((hall, index) => <li key={`${Math.random()}`} className={style.hallItem}>
